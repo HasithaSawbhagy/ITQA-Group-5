@@ -6,16 +6,16 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class AddEmployeePage extends BasePage{
-    @FindBy(id = "firstName")
+    @FindBy(xpath = "//input[@placeholder='First Name']")
     private WebElement firstNameField;
 
-    @FindBy(id = "lastName")
+    @FindBy(xpath = "//input[@placeholder='Last Name']")
     private WebElement lastNameField;
 
-    @FindBy(id = "btnSave")
+    @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
 
-    @FindBy(xpath = "//h1[text()='Personal Details']")
+    @FindBy(xpath = "//h6[text()='Personal Details']")
     private WebElement personalDetailsHeader;
 
 
