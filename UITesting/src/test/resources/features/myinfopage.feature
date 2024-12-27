@@ -1,9 +1,18 @@
 Feature: My Info Functionality
   In order to manage my personal details
   As a valid OrangeHRM user
+  I want to update personal details in my profile
 
-  Scenario: Access My Info Page
-
+  Background:
     Given I am logged into the OrangeHRM Application
-    When I navigate to the My Info section
-    Then I should see my personal information
+
+  Scenario: Update Personal Details
+    Given I navigate to the My Info section
+    When I should see my personal information
+    And I update the personal details with the following values:
+      | FirstName    | LastName   | DateOfBirth  |
+      | John         | Doe        | 2020-16-01   |
+    And I save the personal details
+    Then the personal details should be updated successfully with the following values:
+      | FirstName    | LastName   | DateOfBirth  |
+      | John         | Doe        | 2020-16-01   |
