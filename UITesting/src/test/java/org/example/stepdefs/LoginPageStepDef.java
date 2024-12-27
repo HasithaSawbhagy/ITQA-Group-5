@@ -26,7 +26,7 @@ public class LoginPageStepDef {
     @Before
     public void setup(){
         // ****Set the path to your chromedriver executable here****
-        System.setProperty("webdriver.chrome.driver", "C:/Users/hasit/Downloads/chromedriver-win64/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Java\\jdk-18.0.2\\bin\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
     }
 
