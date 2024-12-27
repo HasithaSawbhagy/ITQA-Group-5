@@ -14,7 +14,7 @@ public class AddEmployeePageStepDef {
 
     @Given("I am logged in to the OrangeHRM application with valid credentials")
     public void iAmLoggedInToTheOrangeHRMApplicationWithValidCredentials() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Chamudi\\Downloads\\chromedriver-win64\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Chamudi\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 
