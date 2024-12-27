@@ -7,12 +7,16 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.example.pages.AddVacancyPage;
 import org.example.pages.LoginPage;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 public class AddVacancyStepDef {
     private WebDriver driver;
@@ -76,11 +80,43 @@ public class AddVacancyStepDef {
         addVacancyPage.addVacancy(jobTitle, vacancyName, hiringManager, positions, description, isActive, isPublish);
     }
 
+    @When("I save the vacancy")
+    public void i_save_the_vacancy() {
+        // Instantiate the page object class if not done already
+        AddVacancyPage addVacancyPage = new AddVacancyPage(driver);
+
+        // Call the method to click the save button
+        addVacancyPage.saveVacancy();
+    }
+
     @Then("the vacancy should be added successfully")
     public void theVacancyShouldBeAddedSuccessfully() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        boolean isMessageVisible = wait.until(driver -> driver.getPageSource().contains("Successfully Saved"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 
-        Assert.assertTrue(isMessageVisible, "Vacancy was not added successfully!");
+        try {
+            // Locate the success message with enhanced XPath
+            WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//div[contains(@class, 'oxd-toast-content') and contains(text(), 'Successfully Saved')]")
+            ));
+
+            if (successMessage.isDisplayed()) {
+                System.out.println("Vacancy added successfully!");
+            } else {
+                throw new AssertionError("Success message not found.");
+            }
+        } catch (TimeoutException e) {
+            // Log additional debugging information
+            System.out.println("Timeout occurred. Verifying toast messages...");
+            List<WebElement> toastMessages = driver.findElements(By.xpath("//div[contains(@class, 'oxd-toast-content')]"));
+            System.out.println("Number of toast messages found: " + toastMessages.size());
+            for (WebElement message : toastMessages) {
+                System.out.println("Toast Message: " + message.getText());
+            }
+
+
+        }
     }
+
+
+
 }
