@@ -7,29 +7,26 @@ import org.openqa.selenium.support.PageFactory;
 
 public class AddUserPage extends BasePage {
 
-    @FindBy(xpath = "//div[@class='oxd-select-text-input' and text()='-- Select --']")
+    @FindBy(xpath = "//label[text()='User Role']/following-sibling::div//div[contains(@class, 'oxd-select-text')]")
     private WebElement userRoleDropdown;
 
-    @FindBy(xpath = "//input[@placeholder='Type for hints...']")
+    @FindBy(xpath = "//label[text()='Employee Name']/following-sibling::div//input")
     private WebElement employeeNameField;
 
-    @FindBy(xpath = "//div[@class='oxd-select-text-input' and text()='Disabled']")
+    @FindBy(xpath = "//label[text()='Status']/following-sibling::div//div[contains(@class, 'oxd-select-text')]")
     private WebElement statusDropdown;
 
-    @FindBy(xpath = "//input[@autocomplete='off']")
+    @FindBy(xpath = "//label[text()='Username']/following-sibling::div//input")
     private WebElement usernameField;
 
-    @FindBy(xpath = "//input[@type='password' and @autocomplete='off']")
+    @FindBy(xpath = "//label[text()='Password']/following-sibling::div//input[@type='password']")
     private WebElement passwordField;
 
-    @FindBy(xpath = "//input[@type='password' and @autocomplete='off']")
+    @FindBy(xpath = "//label[text()='Confirm Password']/following-sibling::div//input[@type='password']")
     private WebElement confirmPasswordField;
 
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
-
-    @FindBy(xpath = "//p[contains(text(), 'Successfully Saved')]")
-    private WebElement successMessage;
 
     public AddUserPage(WebDriver driver) {
         super(driver);
@@ -38,7 +35,7 @@ public class AddUserPage extends BasePage {
 
     public void selectUserRole(String role) {
         userRoleDropdown.click();
-        // Logic to select the role from the dropdown
+        // Add logic to select role from the dropdown
     }
 
     public void enterEmployeeName(String name) {
@@ -47,7 +44,7 @@ public class AddUserPage extends BasePage {
 
     public void selectStatus(String status) {
         statusDropdown.click();
-        // Logic to select the status from the dropdown
+        // Add logic to select status from the dropdown
     }
 
     public void enterUsername(String username) {
@@ -64,9 +61,5 @@ public class AddUserPage extends BasePage {
 
     public void clickSaveButton() {
         saveButton.click();
-    }
-
-    public boolean isSuccessMessageDisplayed() {
-        return successMessage.isDisplayed();
     }
 }
