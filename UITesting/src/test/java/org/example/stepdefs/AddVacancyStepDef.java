@@ -13,10 +13,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 public class AddVacancyStepDef {
     private WebDriver driver;
@@ -66,57 +65,31 @@ public class AddVacancyStepDef {
     }
 
     @When("I fill out the vacancy details")
-    public void iFillOutTheVacancyDetails(io.cucumber.datatable.DataTable dataTable) {
-        var data = dataTable.asMaps(String.class, String.class).get(0);
-
-        String jobTitle = data.get("JobTitle");
-        String vacancyName = data.get("VacancyName");
-        String hiringManager = data.get("HiringManager");
-        String positions = data.get("Positions");
-        String description = data.get("Description");
-        boolean isActive = data.get("Active").equalsIgnoreCase("yes");
-        boolean isPublish = data.get("Publish in RSS Feed and Web Page").equalsIgnoreCase("yes");
-
-        addVacancyPage.addVacancy(jobTitle, vacancyName, hiringManager, positions, description, isActive, isPublish);
+    public void iFillOutTheVacancyDetails(List<Map<String, String>> vacancyData) {
+        Map<String, String> data = vacancyData.get(0); // Get the first (and only) data row
+        addVacancyPage.fillVacancyDetails(
+                data.get("VacancyName"),
+                data.get("Description"),
+                data.get("HiringManager"),
+                data.get("Positions"),
+                data.get("JobTitle")
+        );
     }
 
     @When("I save the vacancy")
-    public void i_save_the_vacancy() {
-        // Instantiate the page object class if not done already
-        AddVacancyPage addVacancyPage = new AddVacancyPage(driver);
-
-        // Call the method to click the save button
+    public void iSaveTheVacancy() {
         addVacancyPage.saveVacancy();
     }
 
-    @Then("the vacancy should be added successfully")
-    public void theVacancyShouldBeAddedSuccessfully() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-
-        try {
-            // Locate the success message with enhanced XPath
-            WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//div[contains(@class, 'oxd-toast-content') and contains(text(), 'Successfully Saved')]")
-            ));
-
-            if (successMessage.isDisplayed()) {
-                System.out.println("Vacancy added successfully!");
-            } else {
-                throw new AssertionError("Success message not found.");
-            }
-        } catch (TimeoutException e) {
-            // Log additional debugging information
-            System.out.println("Timeout occurred. Verifying toast messages...");
-            List<WebElement> toastMessages = driver.findElements(By.xpath("//div[contains(@class, 'oxd-toast-content')]"));
-            System.out.println("Number of toast messages found: " + toastMessages.size());
-            for (WebElement message : toastMessages) {
-                System.out.println("Toast Message: " + message.getText());
-            }
-
-
-        }
+    @Then("I should see the \"Edit Vacancy\" page for the newly added vacancy")
+    public void iShouldSeeTheEditVacancyPageForTheNewlyAddedVacancy() {
+        Assert.assertTrue(addVacancyPage.isEditVacancyPageDisplayed(), "Edit Vacancy page is not displayed.");
     }
-
+    /*public void theVacancyShouldBeAddedSuccessfully() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("/recruitment/viewJobVacancy/"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("/recruitment/viewJobVacancy/"));
+    }*/
 
 
 }

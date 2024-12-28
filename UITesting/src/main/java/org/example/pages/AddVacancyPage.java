@@ -1,126 +1,138 @@
 package org.example.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import java.time.Duration;
 
-public class AddVacancyPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class AddVacancyPage extends BasePage {
 
-    // Locators for the form fields
-    @FindBy(id = "jobTitle") // Ensure this matches the actual element's ID
-    private WebElement jobTitleDropdown;
-
-    @FindBy(id = "vacancyName") // Locator for "Vacancy Name"
+    @FindBy(xpath = "//label[text()='Vacancy Name']/following::input[1]")
     private WebElement vacancyNameField;
 
-    @FindBy(xpath = "//input[@placeholder='Type for hints...']") // Updated for "Hiring Manager" input field
-    private WebElement hiringManagerField;
+    @FindBy(xpath = "//label[text()='Job Title']/following::div[1]")
+    private WebElement jobTitleDropdown;
 
-    @FindBy(id = "noOfPositions") // Updated for "Number of Positions" field
-    private WebElement positionsField;
+    private WebElement jobTitleOption;
 
-    @FindBy(id = "description") // Locator for "Description" field
+    @FindBy(xpath = "//label[text()='Description']/following::textarea[1]")
     private WebElement descriptionField;
 
-    @FindBy(xpath = "//label[contains(text(),'Active')]/preceding-sibling::input") // For Active checkbox
-    private WebElement activeCheckbox;
+    @FindBy(xpath = "//label[text()='Hiring Manager']/following::div[1]/div/div/input")
+    private WebElement hiringManagerInputField;
 
-    @FindBy(xpath = "//label[contains(text(),'Publish in RSS')]/preceding-sibling::input") // For RSS checkbox
-    private WebElement rssCheckbox;
+    private WebElement hiringManagerOption;
 
-    @FindBy(xpath = "//button[@type='submit' and text()='Save']") // Locator for Save button
+    @FindBy(xpath = "//label[text()='Number of Positions']/following::input[1]")
+    private WebElement numberOfPositionsField;
+
+    @FindBy(xpath = "//label[text()='Active']/following::span[contains(@class,'oxd-switch-input--active')]")
+    private WebElement activeSwitch;
+
+    @FindBy(xpath = "//label[text()='Publish in RSS Feed and Web Page']/following::span[contains(@class,'oxd-switch-input--active')]")
+    private WebElement publishSwitch;
+
+    @FindBy(xpath = "//button[text()=' Save ']")
     private WebElement saveButton;
 
-    // Constructor
+    @FindBy(xpath = "//h6[text()='Edit Vacancy']")
+    private WebElement editVacancyTitle;
+
+    private WebDriver driver;
+
+
     public AddVacancyPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15)); // 15 seconds for all waits
+        super(driver);
         PageFactory.initElements(driver, this);
+        this.driver = driver;
     }
 
-    // Method to add a vacancy
-    public void addVacancy(String jobTitle, String vacancyName, String hiringManager, String positions,
-                           String description, boolean isActive, boolean isPublish) {
+    public void enterVacancyName(String vacancyName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(vacancyNameField));
+        vacancyNameField.sendKeys(vacancyName);
+    }
+
+    public void selectJobTitle(String jobTitle) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(jobTitleDropdown));
+        jobTitleDropdown.click();
+        String dynamicJobTitleOptionXpath = String.format("//div[contains(@class, 'oxd-select-dropdown')]//span[text()='%s']",jobTitle );
         try {
-            // Wait for the Job Title dropdown to be visible and select a value
-            waitForElementToBeVisible(jobTitleDropdown);
-            selectJobTitle(jobTitle);
-
-            // Fill in the form fields
-            vacancyNameField.sendKeys(vacancyName);
-            hiringManagerField.sendKeys(hiringManager);
-            positionsField.sendKeys(positions);
-            descriptionField.sendKeys(description);
-
-            // Handle Active checkbox
-            if (isActive && !activeCheckbox.isSelected()) {
-                activeCheckbox.click();
-            } else if (!isActive && activeCheckbox.isSelected()) {
-                activeCheckbox.click();
-            }
-
-            // Handle RSS checkbox
-            if (isPublish && !rssCheckbox.isSelected()) {
-                rssCheckbox.click();
-            } else if (!isPublish && rssCheckbox.isSelected()) {
-                rssCheckbox.click();
-            }
-
-            // Click Save
-            waitForElementToBeClickable(saveButton);
-            saveButton.click();
-
-        } catch (Exception e) {
-            System.err.println("Error while adding vacancy: " + e.getMessage());
+            jobTitleOption =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath(dynamicJobTitleOptionXpath)));
+            jobTitleOption.click();
+        }catch (NoSuchElementException e){
+            throw new NoSuchElementException("Job title " + jobTitle + " not found " + e.getMessage());
+        }catch(StaleElementReferenceException e){
+            jobTitleOption =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath(dynamicJobTitleOptionXpath)));
+            jobTitleOption.click();
         }
     }
 
-    // Helper method to select a value from the Job Title dropdown
-    private void selectJobTitle(String jobTitle) {
-        try {
-            Select select = new Select(jobTitleDropdown);
-            select.selectByVisibleText(jobTitle); // Select by visible text
-        } catch (Exception e) {
-            System.err.println("Failed to select job title: " + e.getMessage());
-        }
+    public void enterDescription(String description) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(descriptionField));
+        descriptionField.sendKeys(description);
     }
 
-    // Helper method to wait for an element to be visible
-    private void waitForElementToBeVisible(WebElement element) {
-        wait.until(ExpectedConditions.visibilityOf(element));
-    }
-
-    // Helper method to wait for an element to be clickable
-    private void waitForElementToBeClickable(WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+    public void enterHiringManager(String hiringManager) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(hiringManagerInputField));
+        hiringManagerInputField.sendKeys(hiringManager);
+        String dynamicHiringManagerOptionXpath = String.format("//div[contains(@class, 'oxd-autocomplete-dropdown')]//span[contains(text(),'%s')]", hiringManager);
+        hiringManagerOption =  driver.findElement(By.xpath(dynamicHiringManagerOptionXpath));
+        wait.until(ExpectedConditions.elementToBeClickable(hiringManagerOption));
+        hiringManagerOption.click();
     }
 
 
+    public void enterNumberOfPositions(String numberOfPositions) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(numberOfPositionsField));
+        numberOfPositionsField.sendKeys(numberOfPositions);
+    }
+
+
+    public void activateActiveSwitch(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(activeSwitch));
+        activeSwitch.click();
+    }
+    public void activatePublishSwitch(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(publishSwitch));
+        publishSwitch.click();
+    }
 
     public void saveVacancy() {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-
-            // Wait for the button to be clickable
-            WebElement saveButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit' and normalize-space()='Save']")));
-
-            // Click the button
-            saveButton.click();
-        } catch (TimeoutException e) {
-            System.out.println("Save button not found or not clickable: " + e.getMessage());
-            throw e;
-        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(saveButton));
+        saveButton.click();
+        wait.until(ExpectedConditions.visibilityOf(editVacancyTitle));
+        //wait.until(ExpectedConditions.invisibilityOf(saveButton));
+        //wait.until(ExpectedConditions.urlContains("/recruitment/addJobVacancy/"));
     }
 
+    public void fillVacancyDetails(String vacancyName, String description, String hiringManager, String numberOfPositions, String jobTitle) {
+        enterVacancyName(vacancyName);
+        selectJobTitle(jobTitle);
+        enterDescription(description);
+        enterHiringManager(hiringManager);
+        enterNumberOfPositions(numberOfPositions);
+        // Assuming the switches are on by default, only click if we want them off
+        // activateActiveSwitch();
+        // activatePublishSwitch();
+    }
+
+    public boolean isEditVacancyPageDisplayed(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.visibilityOf(editVacancyTitle)).isDisplayed();
+    }
 
 }
