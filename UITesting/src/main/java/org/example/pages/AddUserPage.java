@@ -19,6 +19,9 @@ public class AddUserPage {
     @FindBy(xpath = "//div[@class='oxd-select-wrapper']//div[contains(@class, 'oxd-select-text-input') and text()='-- Select --']")
     private WebElement userRoleDropdown;
 
+    @FindBy(xpath = "//label[text()='Status']/following::div[contains(@class,'oxd-select-text')][1]")
+    private WebElement statusDropdown;
+
     // Locators for the "Add User" page
     @FindBy(xpath = "//input[@placeholder='Type for hints...']")
     private WebElement employeeNameField;
@@ -26,10 +29,10 @@ public class AddUserPage {
     @FindBy(xpath = "//input[@class='oxd-input oxd-input--active' and @autocomplete='off']")
     private WebElement usernameField;
 
-    @FindBy(name = "systemUser[password]")
+    @FindBy(xpath = "//label[text()='Password']/following::input[@type='password' and @autocomplete='off'][1]")
     private WebElement passwordField;
 
-    @FindBy(name = "systemUser[confirmPassword]")
+    @FindBy(xpath = "//label[text()='Confirm Password']/following::input[@type='password' and @autocomplete='off'][1]")
     private WebElement confirmPasswordField;
 
     @FindBy(xpath = "//button[@type='submit']")
@@ -63,6 +66,21 @@ public class AddUserPage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", roleOption);
         wait.until(ExpectedConditions.elementToBeClickable(roleOption)).click();
     }
+
+    public void selectStatus(String status) {
+        // Click the Status dropdown to open it
+        statusDropdown.click();
+
+        // Wait for the dropdown options to be visible
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement optionToSelect = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@role='option' and span[text()='" + status + "']]")
+        ));
+
+        // Click the desired option
+        optionToSelect.click();
+    }
+
 
     // Method to enter employee name
     // Method to enter employee name

@@ -29,8 +29,8 @@ public class AddUserSteps {
         loginPage.login("Admin", "admin123");
     }
 
-    @When("I create a new user with the role {string}, employee name {string}, username {string}, password {string}, and confirm password {string}")
-    public void iCreateANewUser(String role, String employeeName, String username, String password, String confirmPassword) {
+    @When("I create a new user with the role {string}, status {string}, employee name {string}, username {string}, password {string}, and confirm password {string}")
+    public void iCreateANewUser(String role, String status, String employeeName, String username, String password, String confirmPassword) {
         // Navigate to the "Add User" page
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser");
 
@@ -39,6 +39,7 @@ public class AddUserSteps {
 
         // Fill in the form to create a new user
         addUserPage.selectUserRole(role);
+        addUserPage.selectStatus(status);
         addUserPage.enterEmployeeName(employeeName);
         addUserPage.enterUsername(username);
         addUserPage.enterPassword(password);
