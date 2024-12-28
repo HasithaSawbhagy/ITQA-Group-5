@@ -23,6 +23,9 @@ public class AddEmployeePage extends BasePage{
     //*[@id="app"]/div[1]/div[2]/div[2]/div/div/div/div[2]/div[1]/h6
     @FindBy(css = "h6.oxd-text.oxd-text--h6.orangehrm-main-title")
     private WebElement personalDetailsHeader;
+
+    @FindBy(css = "div.oxd-form-loader")
+    private WebElement loader;
     private WebDriverWait wait;
 
     public AddEmployeePage(WebDriver driver) {
@@ -36,6 +39,10 @@ public class AddEmployeePage extends BasePage{
     private WebElement waitForElementToBeClickable(WebElement element) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
+    private void waitForLoaderToDisappear() {
+        // Wait for the loader to disappear before proceeding
+        wait.until(ExpectedConditions.invisibilityOf(loader));
+    }
     public void enterFirstName(String firstName) {
         WebElement firstNameField = waitForElementToBeVisible(this.firstNameField);
         firstNameField.sendKeys(firstName);
@@ -47,6 +54,7 @@ public class AddEmployeePage extends BasePage{
     }
 
     public void clickSaveButton() {
+        waitForLoaderToDisappear();
         WebElement saveButton = waitForElementToBeClickable(this.saveButton);
         saveButton.click();
     }
