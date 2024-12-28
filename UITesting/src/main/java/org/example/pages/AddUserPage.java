@@ -23,7 +23,7 @@ public class AddUserPage {
     @FindBy(xpath = "//input[@placeholder='Type for hints...']")
     private WebElement employeeNameField;
 
-    @FindBy(name = "systemUser[username]")
+    @FindBy(xpath = "//input[@class='oxd-input oxd-input--active' and @autocomplete='off']")
     private WebElement usernameField;
 
     @FindBy(name = "systemUser[password]")
@@ -63,10 +63,6 @@ public class AddUserPage {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", roleOption);
         wait.until(ExpectedConditions.elementToBeClickable(roleOption)).click();
     }
-
-
-
-
 
     // Method to enter employee name
     // Method to enter employee name
