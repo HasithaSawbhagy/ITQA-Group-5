@@ -16,14 +16,14 @@ public class AddUserPage {
     private WebDriver driver;
 
     // Locators for the "Add User" page
-    @FindBy(xpath = "//div[@class='oxd-select-wrapper']//div[contains(@class, 'oxd-select-text-input') and text()='-- Select --']")
+    @FindBy(xpath = "//label[text()='User Role']/following::div[contains(@class, 'oxd-select-text-input') and text()='-- Select --']")
     private WebElement userRoleDropdown;
     @FindBy(xpath = "//label[text()='Status']/following::div[contains(@class,'oxd-select-text')][1]")
     private WebElement statusDropdown;
     // Locators for the "Add User" page
-    @FindBy(xpath = "//input[@placeholder='Type for hints...']")
+    @FindBy(xpath = "//label[text()='Employee Name']/following::input[@placeholder='Type for hints...']")
     private WebElement employeeNameField;
-    @FindBy(xpath = "//input[@class='oxd-input oxd-input--active' and @autocomplete='off']")
+    @FindBy(xpath = "//label[text()='Username']/following::input[@class='oxd-input oxd-input--active' and @autocomplete='off']")
     private WebElement usernameField;
     @FindBy(xpath = "//label[text()='Password']/following::input[@type='password' and @autocomplete='off'][1]")
     private WebElement passwordField;

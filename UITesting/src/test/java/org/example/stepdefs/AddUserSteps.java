@@ -7,6 +7,10 @@ import org.example.pages.AddUserPage;
 import org.example.pages.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import static org.junit.Assert.assertTrue;
 
@@ -51,11 +55,19 @@ public class AddUserSteps {
 
     @Then("The user should be created successfully")
     public void theUserShouldBeCreatedSuccessfully() {
-        // Verification logic (e.g., success message)
-        String currentUrl = driver.getCurrentUrl();
-        assertTrue("The user was not created successfully", currentUrl.contains("success"));
+        // Expected URL
+        String expectedUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers";
+
+        // Wait for the URL to change to the expected value
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        boolean isUrlCorrect = wait.until(ExpectedConditions.urlToBe(expectedUrl));
+
+        // Assert the URL is correct
+        assertTrue("The user was not redirected to the expected URL: " + expectedUrl, isUrlCorrect);
 
         // Close the browser
         driver.quit();
     }
+
+
 }
