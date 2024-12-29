@@ -11,6 +11,7 @@ import org.example.pages.LoginPage;
 import org.example.pages.MyInfoPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -71,16 +72,28 @@ public class MyInfoPageStepDef {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name("firstName")));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name("lastName")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("middleName")));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@class, 'oxd-input') and @placeholder='yyyy-dd-mm']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Nationality']/following::div[1]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text()='Marital Status']/following::div[1]")));
 
         // Wait for the overlay (if any) to disappear
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("oxd-form-loader")));
 
         String FirstName = userDetails.get("FirstName");
+        String MiddleName = userDetails.get("MiddleName");
         String LastName = userDetails.get("LastName");
         String DateOfBirth = userDetails.get("DateOfBirth");
+        String nationality = userDetails.get("Nationality");
+        String maritalStatus = userDetails.get("MaritalStatus");
+        String Gender = userDetails.get("Gender");
+        String EmployeeId = userDetails.get("EmployeeId");
+        String OtherId = userDetails.get("OtherId");
+        String DriverLicenseNumber = userDetails.get("DriverLicenseNumber");
+        String LicenseExpiryDate = userDetails.get("LicenseExpiryDate");
 
-        myInfoPage.updateDetails(FirstName, LastName,DateOfBirth);
+
+        myInfoPage.updateDetails(FirstName, MiddleName, LastName,DateOfBirth, nationality, maritalStatus, Gender,EmployeeId, OtherId,DriverLicenseNumber,LicenseExpiryDate);
 
     }
 
@@ -97,23 +110,35 @@ public class MyInfoPageStepDef {
         var expectedDetails = dataTable.asMaps(String.class, String.class).get(0);
         // Retrieve the updated details from the input fields
         String updatedFirstName = myInfoPage.getFirstName();
+        String updatedMiddleName = myInfoPage.getMiddleName();
         String updatedLastName = myInfoPage.getLastName();
         String updatedDateOfBirth = myInfoPage.getDateOfBirth();
+        String updatedNationality = myInfoPage.getNationality();
+        String updatedMaritalStatus = myInfoPage.getMaritalStatus();
+        String updatedGender = myInfoPage.getGender();
 
         // Define the expected values
         String expectedFirstName = expectedDetails.get("FirstName");
+        String expectedMiddleName = expectedDetails.get("MiddleName");
         String expectedLastName = expectedDetails.get("LastName");
         String expectedDateOfBirth = expectedDetails.get("DateOfBirth");
-
+        String expectedNationality = expectedDetails.get("Nationality");
+        String expectedMaritalStatus = expectedDetails.get("MaritalStatus");
+        String expectedGender = expectedDetails.get("Gender");
 
         // Verify if the details match
         Assert.assertEquals(updatedFirstName, expectedFirstName, "First Name did not update correctly");
+        Assert.assertEquals(updatedMiddleName, expectedMiddleName, "Middle Name did not update correctly");
         Assert.assertEquals(updatedLastName, expectedLastName, "Last Name did not update correctly");
         Assert.assertEquals(updatedDateOfBirth, expectedDateOfBirth, "Date of Birth did not update correctly");
-
+        Assert.assertEquals(updatedNationality, expectedNationality, "Nationality mismatch.");
+        Assert.assertEquals(updatedMaritalStatus, expectedMaritalStatus, "Marital Status mismatch.");
+        Assert.assertEquals(updatedGender, expectedGender, "Gender mismatch.");
+        Assert.assertEquals(myInfoPage.getEmployeeId(), expectedDetails.get("EmployeeId"));
+        Assert.assertEquals(myInfoPage.getOtherId(), expectedDetails.get("OtherId"));
+        Assert.assertEquals(myInfoPage.getDriverLicenseNumber(), expectedDetails.get("DriverLicenseNumber"));
+        Assert.assertEquals(myInfoPage.getLicenseExpiryDate(), expectedDetails.get("LicenseExpiryDate"));
 
     }
-
-
 
 }

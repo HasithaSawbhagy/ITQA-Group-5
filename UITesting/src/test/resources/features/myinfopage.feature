@@ -10,9 +10,10 @@ Feature: My Info Functionality
     Given I navigate to the My Info section
     When I should see my personal information
     And I update the personal details with the following values:
-      | FirstName    | LastName   | DateOfBirth  |
-      | John         | Doe        | 2020-16-01   |
+      | FirstName    | MiddleName | LastName   | DateOfBirth  | Nationality  | MaritalStatus  | Gender  | EmployeeId  | OtherId | DriverLicenseNumber | LicenseExpiryDate |
+      | John         | Luther     | Doe        | 2020-16-01   | Afghan       | Single         | Female  | 12345       | 6789    | ABC123              | 2025-01-01        |
     And I save the personal details
     Then the personal details should be updated successfully with the following values:
-      | FirstName    | LastName   | DateOfBirth  |
-      | John         | Doe        | 2020-16-01   |
+      | FirstName    | MiddleName | LastName   | DateOfBirth  | Nationality  | MaritalStatus  | Gender  | EmployeeId  | OtherId | DriverLicenseNumber | LicenseExpiryDate |
+      | John         | Luther     | Doe        | 2020-16-01   | Afghan       | Single         | Female  | 12345       | 6789    | ABC123              | 2025-01-01        |
+
