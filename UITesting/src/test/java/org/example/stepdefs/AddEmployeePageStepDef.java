@@ -12,7 +12,7 @@ public class AddEmployeePageStepDef {
     private LoginPage loginPage;
     private AddEmployeePage addEmployeePage;
 
-    @Given("I am logged in to the OrangeHRM application with valid credentials")
+    @Given("I am logged in to the OrangeHRM application as an Admin")
     public void iAmLoggedInToTheOrangeHRMApplicationWithValidCredentials() {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\Chamudi\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
@@ -22,13 +22,19 @@ public class AddEmployeePageStepDef {
         loginPage.login("Admin", "admin123");
     }
 
-    @When("I navigate to the \"Add Employee\" page")
-    public void iNavigateToTheAddEmployeePage() {
-        driver.navigate().to("https://opensource-demo.orangehrmlive.com/web/index.php/pim/addEmployee");
-        addEmployeePage = new AddEmployeePage(driver);
+    @When("I click on the \"PIM\" option in the side navigation bar")
+    public void iClickOnThePIMOptionInTheSideNavigationBar() {
+        addEmployeePage = new AddEmployeePage(driver); // Initialize AddEmployeePage
+        addEmployeePage.clickPIMOption();
     }
 
-    @When("I fill in the required fields {string} and {string}")
+    @When("I select \"Add Employee\" option in top navigation bar")
+    public void iNavigateToTheAddEmployeePage() {
+        addEmployeePage = new AddEmployeePage(driver);
+        addEmployeePage.clickAddEmployeeOption();
+    }
+
+    @When("I fill in the required fields with first name {string} and last name {string}")
     public void iFillInTheRequiredFields(String firstName, String lastName) {
         addEmployeePage.enterFirstName(firstName);
         addEmployeePage.enterLastName(lastName);

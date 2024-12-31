@@ -12,6 +12,12 @@ import java.time.Duration;
 
 public class AddEmployeePage extends BasePage {
 
+    @FindBy(xpath = "//span[text()='PIM']")
+    private WebElement pimOption;
+
+    @FindBy(xpath = "//a[text()='Add Employee']")
+    private WebElement addEmployeeOption;
+
     @FindBy(name = "firstName")
     private WebElement firstNameField;
 
@@ -39,6 +45,22 @@ public class AddEmployeePage extends BasePage {
 
     private WebElement waitForElementToBeClickable(WebElement element) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+   /* public void clickPIMOption() {
+        WebElement pim = waitForElementToBeClickable(this.pimOption);
+        pim.click();
+    }*/
+   public void clickPIMOption() {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+       wait.until(ExpectedConditions.elementToBeClickable(pimOption));
+       pimOption.click();
+   }
+
+    public void clickAddEmployeeOption() {
+        wait.until(ExpectedConditions.elementToBeClickable(pimOption)).click(); // Ensure PIM is clicked first
+        WebElement addEmployee = wait.until(ExpectedConditions.visibilityOf(addEmployeeOption)); // Wait for Add Employee to be visible
+        addEmployee.click();
     }
 
     public void enterFirstName(String firstName) {
