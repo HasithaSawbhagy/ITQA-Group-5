@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class AddUserPage {
-    private WebDriver driver;
+public class AddUserPage extends BasePage{
+
 
     // Locators for the "Add User" page
     @FindBy(xpath = "//label[text()='User Role']/following::div[contains(@class, 'oxd-select-text-input') and text()='-- Select --']")
@@ -34,7 +34,7 @@ public class AddUserPage {
 
     // Constructor
     public AddUserPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 

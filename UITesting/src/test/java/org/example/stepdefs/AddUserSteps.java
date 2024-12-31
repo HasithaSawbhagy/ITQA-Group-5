@@ -1,5 +1,6 @@
 package org.example.stepdefs;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,7 +20,7 @@ public class AddUserSteps {
     private LoginPage loginPage;
     private AddUserPage addUserPage;
 
-    @Given("I am logged into the HRM system")
+    @Given("I am logged into the HRM system as Admin")
     public void iAmLoggedIntoTheHRMSystem() {
         // Set up the WebDriver
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver-win64\\chromedriver.exe");
@@ -33,27 +34,32 @@ public class AddUserSteps {
         loginPage.login("Admin", "admin123");
     }
 
-    @When("I create a new user with the role {string}, status {string}, employee name {string}, username {string}, password {string}, and confirm password {string}")
-    public void iCreateANewUser(String role, String status, String employeeName, String username, String password, String confirmPassword) {
-        // Navigate to the "Add User" page
-        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser");
+    @When("I navigate to the Add User page")
+    public void iNavigateToThePage() {
+        driver.navigate().to("https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser");
+        addUserPage = new AddUserPage(driver);
+    }
 
+    @And("I fill in the required fields with role {string}, status {string}, employee name {string}, username {string}, password {string}, and confirm password {string}")
+    public void iFillInTheRequiredFields(String role, String status, String employeeName, String username, String password, String confirmPassword) {
         // Initialize the AddUserPage object
         addUserPage = new AddUserPage(driver);
 
-        // Fill in the form to create a new user
+        // Fill in the form fields
         addUserPage.selectUserRole(role);
         addUserPage.selectStatus(status);
         addUserPage.enterEmployeeName(employeeName);
         addUserPage.enterUsername(username);
         addUserPage.enterPassword(password);
         addUserPage.enterConfirmPassword(confirmPassword);
+    }
 
-        // Click the save button
+    @And("I click the Save button")
+    public void iClickTheButton() {
         addUserPage.clickSave();
     }
 
-    @Then("The user should be created successfully")
+    @Then("I should see the View System Users page for the newly added user")
     public void theUserShouldBeCreatedSuccessfully() {
         // Expected URL
         String expectedUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers";
@@ -61,9 +67,6 @@ public class AddUserSteps {
         // Wait for the URL to change to the expected value
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         boolean isUrlCorrect = wait.until(ExpectedConditions.urlToBe(expectedUrl));
-
-        // Assert the URL is correct
-        assertTrue("The user was not redirected to the expected URL: " + expectedUrl, isUrlCorrect);
 
         // Close the browser
         driver.quit();
