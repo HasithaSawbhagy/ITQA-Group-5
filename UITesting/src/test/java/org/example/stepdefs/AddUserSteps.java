@@ -34,10 +34,18 @@ public class AddUserSteps {
         loginPage.login("Admin", "admin123");
     }
 
-    @When("I navigate to the Add User page")
-    public void iNavigateToThePage() {
-        driver.navigate().to("https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser");
+    @When("I navigate to the \"View System Users\" page via the \"Admin\" option in the side navigation bar")
+    public void iNavigateToTheAdminOption() {
+        // Initialize the AddUserPage object
         addUserPage = new AddUserPage(driver);
+        addUserPage.clickAdminOption();
+    }
+
+    @And("I click the \"Add\" button to open the \"Add User\" page")
+    public void iNavigateToTheAddUser() {
+        // Initialize the AddUserPage object
+        addUserPage = new AddUserPage(driver);
+        addUserPage.clickAddButton();
     }
 
     @And("I fill in the required fields with role {string}, status {string}, employee name {string}, username {string}, password {string}, and confirm password {string}")

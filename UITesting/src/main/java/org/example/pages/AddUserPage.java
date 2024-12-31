@@ -16,6 +16,11 @@ public class AddUserPage extends BasePage{
 
 
     // Locators for the "Add User" page
+    @FindBy(xpath = "//span[text()='Admin']")
+    private WebElement adminOption;
+
+    @FindBy(xpath = "//button[@type='button' and contains(@class, 'oxd-button--secondary')]")
+    private WebElement addButton;
     @FindBy(xpath = "//label[text()='User Role']/following::div[contains(@class, 'oxd-select-text-input') and text()='-- Select --']")
     private WebElement userRoleDropdown;
     @FindBy(xpath = "//label[text()='Status']/following::div[contains(@class,'oxd-select-text')][1]")
@@ -37,6 +42,29 @@ public class AddUserPage extends BasePage{
         super(driver);
         PageFactory.initElements(driver, this);
     }
+
+    // Method to click on the Admin option
+    public void clickAdminOption() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // Wait until the admin option is clickable
+        wait.until(ExpectedConditions.elementToBeClickable(adminOption));
+
+        // Click the admin option
+        adminOption.click();
+    }
+
+    // Method to click on the Add button
+    public void clickAddButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // Wait until the Add button is clickable
+        wait.until(ExpectedConditions.elementToBeClickable(addButton));
+
+        // Click the Add button
+        addButton.click();
+    }
+
 
     // Method to select a user role
     public void selectUserRole(String role) {
