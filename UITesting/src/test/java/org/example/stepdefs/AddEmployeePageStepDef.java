@@ -36,7 +36,7 @@ public class AddEmployeePageStepDef {
 
     @When("I click the \"Save\" button")
     public void iClickTheSaveButton() {
-        addEmployeePage.clickSaveButton();
+        addEmployeePage.clickSave();
     }
 
     @Then("I should see the \"Personal Details\" page for the newly added employee")
