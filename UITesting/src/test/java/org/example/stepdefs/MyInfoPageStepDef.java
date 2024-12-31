@@ -18,13 +18,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.List;
 
 public class MyInfoPageStepDef {
     private WebDriver driver;
     private LoginPage loginPage;
     private MyInfoPage myInfoPage;
-
-    private HomePage homePage;
 
     @Before
     public void setup() {
@@ -48,7 +47,7 @@ public class MyInfoPageStepDef {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
-        homePage = loginPage.login("Admin", "admin123");
+        loginPage.login("Admin", "admin123");
 
         // Verify login success
         Assert.assertEquals(driver.getTitle(), "OrangeHRM");
@@ -139,6 +138,18 @@ public class MyInfoPageStepDef {
         Assert.assertEquals(myInfoPage.getDriverLicenseNumber(), expectedDetails.get("DriverLicenseNumber"));
         Assert.assertEquals(myInfoPage.getLicenseExpiryDate(), expectedDetails.get("LicenseExpiryDate"));
 
+    }
+
+    @When("I update the personal details with {string}, {string}, and {string}")
+    public void iUpdateThePersonalDetailsWith(String firstName, String lastName, String employeeId ) {
+        myInfoPage.updateInvalidDetails(firstName, lastName, employeeId);
+    }
+
+
+    @Then("I should see an error message indicating {string}")
+    public void iShouldSeeAnErrorMessageIndicating(String expectedErrorMessage) {
+        List<String> errorMessages = myInfoPage.getErrorMessages();
+        Assert.assertTrue(errorMessages.contains(expectedErrorMessage), "Expected error message not found!");
     }
 
 }

@@ -7,13 +7,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class MyInfoPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
-    @FindBy(xpath = "//a[contains(@href, 'viewMyDetails')]")
+    @FindBy(xpath = "//span[text()='My Info']")
     private WebElement myInfoTab;
 
     @FindBy(xpath = "//h6[contains(@class, 'oxd-text--h6') and text()='Personal Details']")
@@ -62,12 +63,14 @@ public class MyInfoPage {
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
 
-//    @FindBy(xpath = "//div[contains(@class, 'oxd-toast-content') and contains(text(), 'Successfully Updated')]")
-//    private WebElement successMessage;
+    @FindBy(xpath = "//span[contains(@class, 'oxd-input-field-error-message') and text()='Required']")
+    private WebElement missingFieldsErrorMessage;
+
+    @FindBy(xpath = "//span[contains(@class, 'oxd-input-field-error-message') and text()='Should not exceed 10 characters']")
+    private WebElement invalidFieldErrorMessage;
 
     @FindBy(xpath = "//span[contains(@class, 'oxd-input-field-error-message')]")
-    private WebElement errorMessage;
-
+    private List<WebElement> errorMessages;
 
     // Constructor
     public MyInfoPage(WebDriver driver) {
@@ -226,5 +229,18 @@ public class MyInfoPage {
             return "Not Selected";
         }
     }
+
+    public void updateInvalidDetails(String firstName, String lastName, String employeeId) {
+       clearAndEnterText(firstNameField,firstName);
+       clearAndEnterText(lastNameField,lastName);
+       clearAndEnterText(employeeIdField,employeeId);
+    }
+
+    // Fetch all error messages displayed
+    public List<String> getErrorMessages() {
+        wait.until(ExpectedConditions.visibilityOfAllElements(errorMessages));
+        return errorMessages.stream().map(WebElement::getText).toList();
+    }
+
 
 }
