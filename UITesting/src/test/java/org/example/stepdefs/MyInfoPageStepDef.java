@@ -54,17 +54,18 @@ public class MyInfoPageStepDef {
     }
 
     @Given("I navigate to the My Info section")
-    public void iNavigateToTheMyInfoSection() {
+    public void iNavigateToMyInfoSection() {
         myInfoPage = new MyInfoPage(driver);
         myInfoPage.navigateToMyInfo();
+
     }
 
-    @When("I should see my personal information")
+    @When("I view my personal information")
     public void iShouldSeeMyPersonalInformation() {
         Assert.assertTrue(myInfoPage.isPersonalDetailsHeaderDisplayed(), "Personal Details header is not displayed.");
     }
 
-    @And("I update the personal details with the following values:")
+    @And("I update the personal details with the following:")
     public void iUpdateThePersonalDetailsWithTheFollowingValues(io.cucumber.datatable.DataTable dataTable) {
         var userDetails = dataTable.asMaps(String.class, String.class).get(0);
 
@@ -91,12 +92,11 @@ public class MyInfoPageStepDef {
         String DriverLicenseNumber = userDetails.get("DriverLicenseNumber");
         String LicenseExpiryDate = userDetails.get("LicenseExpiryDate");
 
-
         myInfoPage.updateDetails(FirstName, MiddleName, LastName,DateOfBirth, nationality, maritalStatus, Gender,EmployeeId, OtherId,DriverLicenseNumber,LicenseExpiryDate);
 
     }
 
-    @And("I save the personal details")
+    @And("I save the updated details")
     public void iSaveThePersonalDetails() {
 
         // Call the method to click the save button
@@ -104,7 +104,7 @@ public class MyInfoPageStepDef {
     }
 
 
-    @Then("the personal details should be updated successfully with the following values:")
+    @Then("the details should be successfully updated with:")
     public void thePersonalDetailsShouldBeUpdatedSuccessfully(io.cucumber.datatable.DataTable dataTable) {
         var expectedDetails = dataTable.asMaps(String.class, String.class).get(0);
         // Retrieve the updated details from the input fields
@@ -140,7 +140,7 @@ public class MyInfoPageStepDef {
 
     }
 
-    @When("I update the personal details with {string}, {string}, and {string}")
+    @When("I update the details with {string}, {string}, and {string}")
     public void iUpdateThePersonalDetailsWith(String firstName, String lastName, String employeeId ) {
         myInfoPage.updateInvalidDetails(firstName, lastName, employeeId);
     }

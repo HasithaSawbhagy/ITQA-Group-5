@@ -54,7 +54,7 @@ public class MyInfoPage {
     @FindBy(xpath = "//label[normalize-space(text())='Other Id']/following::input[1]")
     private WebElement otherIdField;
 
-    @FindBy(xpath = "//label[text()=\"Driver's License Number\"]/following::input[1]")
+    @FindBy(xpath = "//label[text()=\"Driver License Number\"]/following::input[1]")
     private WebElement driverLicenseNumberField;
 
     @FindBy(xpath = "//label[normalize-space(text())='License Expiry Date']/following::input[1]")
@@ -72,7 +72,6 @@ public class MyInfoPage {
     @FindBy(xpath = "//span[contains(@class, 'oxd-input-field-error-message')]")
     private List<WebElement> errorMessages;
 
-    // Constructor
     public MyInfoPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5)); // 15 seconds for all waits
@@ -80,13 +79,11 @@ public class MyInfoPage {
     }
 
     public void navigateToMyInfo() {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(myInfoTab));
         myInfoTab.click();
     }
 
     public boolean isPersonalDetailsHeaderDisplayed() {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement personalDetailsHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h6[contains(@class, 'oxd-text--h6') and text()='Personal Details']")));
         return personalDetailsHeader.isDisplayed();
     }
@@ -95,9 +92,8 @@ public class MyInfoPage {
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
         element.clear();
-        // Select all text in the field
-        element.sendKeys(Keys.CONTROL + "a");  // Selects all text in the input field
-        element.sendKeys(Keys.DELETE);         // Clears the selected text
+        element.sendKeys(Keys.CONTROL + "a");
+        element.sendKeys(Keys.DELETE);
         element.sendKeys(text);
     }
 
