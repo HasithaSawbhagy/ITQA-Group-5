@@ -80,5 +80,14 @@ public class AddUserSteps {
         driver.quit();
     }
 
+    @Then("I should see an error message \"Should be at least 5 characters\"")
+    public void theErrorMessageDispalySuccessfully() {
+        // Assert that the error message is displayed
+        assertTrue("Error message 'Should be at least 5 characters' is not displayed", addUserPage.isErrorMessageDisplayed());
+
+        // Close the browser
+        driver.quit();
+    }
+
 
 }

@@ -40,6 +40,10 @@ public class AddUserPage extends BasePage {
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
 
+    // Locator for the error message
+    @FindBy(xpath = "//span[contains(@class, 'oxd-input-field-error-message') and text()='Should be at least 5 characters']")
+    private WebElement errorMessage;
+
     // Constructor
     public AddUserPage(WebDriver driver) {
         super(driver);
@@ -104,5 +108,16 @@ public class AddUserPage extends BasePage {
 
     public void clickSave() {
         waitForElementToBeClickable(saveButton).click();
+    }
+
+    // Method to check if the error message is displayed
+    public boolean isErrorMessageDisplayed() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOf(errorMessage));
+            return errorMessage.isDisplayed();
+        } catch (Exception e) {
+            return false; // Return false if the error message is not found or not visible
+        }
     }
 }
