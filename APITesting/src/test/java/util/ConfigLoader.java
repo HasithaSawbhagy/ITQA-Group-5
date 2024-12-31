@@ -16,6 +16,7 @@ public class ConfigLoader {
     }
 
     public static String getProperty(String key) {
+        // Return null if property is missing. This is to handle the nullpointer exception
         return properties.getProperty(key);
     }
 }
