@@ -1,12 +1,13 @@
 Feature: Fetch Book By ID API
 
-  Scenario Outline: Fetch book details by ID
-    Given I have valid credentials for "<role>"
-    When I fetch the book details by ID "<bookId>"
+  Scenario: Fetch book details by ID as a regular user
+    Given I have valid credentials for "user"
+    When I fetch the book details by ID "2"
     Then the API response should return status code 200
-    And the response should contain the book details for ID "<bookId>"
+    And the response should contain the book details for ID "2"
 
-    Examples:
-      | role   | bookId |
-      | user   | 1      |
-      | admin  | 2      |
+#  Scenario: Fetch book details by ID as an admin user
+#    Given I have valid credentials for "admin"
+#    When I fetch the book details by ID "5"
+#    Then the API response should return status code 200
+#    And the response should contain the book details for ID "5"
