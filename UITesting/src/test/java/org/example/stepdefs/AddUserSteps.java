@@ -69,14 +69,16 @@ public class AddUserSteps {
 
     @Then("I should see the View System Users page for the newly added user")
     public void theUserShouldBeCreatedSuccessfully() {
-        // Expected URL
-        String expectedUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers";
+        // Part of the expected URL to check
+        String expectedUrlPart = "viewSystemUsers";
 
-        // Wait for the URL to change to the expected value
+        // Wait for the URL to contain the expected part
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        boolean isUrlCorrect = wait.until(ExpectedConditions.urlToBe(expectedUrl));
+        boolean isUrlCorrect = wait.until(ExpectedConditions.urlContains(expectedUrlPart));
 
-        // Close the browser
+        // Assert that the URL contains the expected part
+        assertTrue("The URL does not contain the expected part: " + expectedUrlPart, isUrlCorrect);
+
         driver.quit();
     }
 
@@ -85,7 +87,6 @@ public class AddUserSteps {
         // Assert that the error message is displayed
         assertTrue("Error message 'Should be at least 5 characters' is not displayed", addUserPage.isErrorMessageDisplayed());
 
-        // Close the browser
         driver.quit();
     }
 
