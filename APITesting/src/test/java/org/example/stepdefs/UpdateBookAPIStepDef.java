@@ -10,6 +10,7 @@ import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import util.ConfigLoader;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -30,7 +31,16 @@ public class UpdateBookAPIStepDef {
 
     @When("I send a PUT request to {string} with the following details:")
     public void iSendAPutRequestToWithTheFollowingDetails(String endpoint, DataTable dataTable) {
-        Map<String, String> data = dataTable.asMaps().get(0);
+        Map<String, String> data = new HashMap<>(dataTable.asMaps().get(0));
+
+        // Handle empty or null values in the feature file
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            if (entry.getValue() == null || entry.getValue().trim().isEmpty()) {
+                data.put(entry.getKey(), ""); // Replace null/empty with an empty string
+            }
+        }
+
+        // Send the PUT request with the modified data
         response = request.body(data).when().put(endpoint);
     }
 
