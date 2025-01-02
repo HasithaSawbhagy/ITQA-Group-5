@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.example.pages.AddCandidatePage;
 import org.example.pages.LoginPage;
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -63,10 +63,9 @@ public class AddCandidateStepDef {
 
     }
 
-
     @When("I fill out the candidate details")
-    public void iFillOutTheCandidateDetails(List<Map<String, String>> vacancyData) {
-        Map<String, String> data = vacancyData.get(0); // Get the first (and only) data row
+    public void iFillOutTheCandidateDetails(List<Map<String, String>> candidateData) {
+        Map<String, String> data = candidateData.get(0);
         addCandidatePage.fillCandidateDetails(
                 data.get("firstName"),
                 data.get("middleName"),
@@ -74,10 +73,16 @@ public class AddCandidateStepDef {
                 data.get("notes"),
                 data.get("contact"),
                 data.get("JobTitle"),
-                data.get("email")
-
+                data.get("email"),
+                data.get("keywords")
         );
     }
+    @When("I upload a resume")
+    public void iUploadAResume(){
+        String filePath = "C:\\Users\\hasit\\Downloads\\test.pdf";
+        addCandidatePage.uploadResume(filePath);
+    }
+
 
     @When("I save the candidate")
     public void iSaveTheCandidate() {
@@ -88,5 +93,11 @@ public class AddCandidateStepDef {
     @Then("I should see the \"Edit candidate\" page for the newly added candidate")
     public void iShouldSeeTheEditCandidatePageForTheNewlyAddedCandidate() {
         Assert.assertTrue(addCandidatePage.isEditCandidatePageDisplayed(), "Edit Candidate page is not displayed.");
+    }
+
+    @Then("I should see an error message")
+    public void iShouldSeeAnErrorMessage(){
+        List<String> errorMessages = addCandidatePage.getErrorMessages();
+        Assert.assertFalse(errorMessages.isEmpty(), "Error message is not displayed");
     }
 }

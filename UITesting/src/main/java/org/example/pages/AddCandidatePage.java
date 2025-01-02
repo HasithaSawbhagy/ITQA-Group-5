@@ -39,6 +39,9 @@ public class AddCandidatePage extends BasePage {
     @FindBy(xpath = "//label[text()='Contact Number']/following::input[1]")
     private WebElement contactInputField;
 
+    @FindBy(xpath = "//input[@placeholder='Enter comma seperated words...']")
+    private WebElement keywordsField;
+
 
     @FindBy(xpath = "//button[text()=' Save ']")
     private WebElement saveButton;
@@ -55,6 +58,11 @@ public class AddCandidatePage extends BasePage {
 
     @FindBy(xpath = "//span[contains(@class, 'oxd-input-field-error-message')]")
     private List<WebElement> errorMessages;
+
+    // New elements
+    @FindBy(xpath = "//div[contains(@class, 'oxd-file-button')]")
+    private WebElement browseButton;
+    //Removed fileInput element
 
 
     public AddCandidatePage(WebDriver driver) {
@@ -96,7 +104,6 @@ public class AddCandidatePage extends BasePage {
     }
 
 
-
     public void selectJobTitle(String jobTitle) {
         wait.until(ExpectedConditions.elementToBeClickable(vacancyDropdown));
         vacancyDropdown.click();
@@ -116,7 +123,7 @@ public class AddCandidatePage extends BasePage {
         wait.until(ExpectedConditions.visibilityOf(notesField));
         notesField.sendKeys(notes);
     }
-    
+
 
 
     public void enterContactNumber(String contact) {
@@ -124,6 +131,40 @@ public class AddCandidatePage extends BasePage {
         contactInputField.sendKeys(contact);
     }
 
+    public void enterKeywords(String keywords) {
+        wait.until(ExpectedConditions.visibilityOf(keywordsField));
+        keywordsField.sendKeys(keywords);
+    }
+    // Method to upload a file
+    public void uploadResume(String filePath) {
+        wait.until(ExpectedConditions.elementToBeClickable(browseButton));
+        browseButton.click();
+        // Using AutoIt or Robot class to select the file from the dialog
+        try {
+            Thread.sleep(1000); //giving some time for dialog to load, might not needed if the PC is fast
+            java.awt.Robot robot = new java.awt.Robot();
+
+            // Simulate pressing Ctrl+L (to focus on the address bar)
+            robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);
+            robot.keyPress(java.awt.event.KeyEvent.VK_L);
+            robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL);
+            robot.keyRelease(java.awt.event.KeyEvent.VK_L);
+
+
+            // Simulate typing the file path
+            java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(filePath), null);
+            robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL);
+            robot.keyPress(java.awt.event.KeyEvent.VK_V);
+            robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL);
+            robot.keyRelease(java.awt.event.KeyEvent.VK_V);
+            Thread.sleep(500);
+            robot.keyPress(java.awt.event.KeyEvent.VK_ENTER);
+            robot.keyRelease(java.awt.event.KeyEvent.VK_ENTER);
+
+        } catch (Exception e) {
+            System.out.println("Exception occurred : " + e);
+        }
+    }
 
 
     public void saveCandidate() {
@@ -133,7 +174,7 @@ public class AddCandidatePage extends BasePage {
         wait.until(ExpectedConditions.visibilityOf(editCandidateTitle));
     }
 
-    public void fillCandidateDetails(String firstName, String middleName, String lastName, String notes, String contact, String jobTitle, String email) {
+    public void fillCandidateDetails(String firstName, String middleName, String lastName, String notes, String contact, String jobTitle, String email, String keywords) {
         enterFirstName(firstName);
         enterMiddleName(middleName);
         enterLastName(lastName);
@@ -141,7 +182,7 @@ public class AddCandidatePage extends BasePage {
         enterNote(notes);
         enterContactNumber(contact);
         enterEmail(email);
-
+        enterKeywords(keywords);
     }
 
     public boolean isEditCandidatePageDisplayed(){
