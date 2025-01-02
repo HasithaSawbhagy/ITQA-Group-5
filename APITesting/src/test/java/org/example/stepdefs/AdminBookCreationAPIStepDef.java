@@ -1,13 +1,14 @@
 package org.example.stepdefs;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import util.ConfigLoader;
 
@@ -16,8 +17,20 @@ import java.util.List;
 import java.util.Map;
 
 public class AdminBookCreationAPIStepDef {
-    private RequestSpecification request;
+
     private Response response;
+
+    @Before
+    public void setUp() {
+        // Reset authentication before each scenario
+        RestAssured.authentication = null;
+    }
+
+    @After
+    public void tearDown() {
+        // Clear authentication after each scenario to ensure no carryover
+        RestAssured.authentication = null;
+    }
 
     @Given("I am logged in as an {string}")
     public void iAmLoggedInAsAn(String userRole) {
@@ -25,20 +38,23 @@ public class AdminBookCreationAPIStepDef {
         String username = ConfigLoader.getProperty("username." + userRole);
         String password = ConfigLoader.getProperty("password." + userRole);
 
-        // Setup RestAssured request with authentication and base URI
-        request = RestAssured.given()
-                .baseUri(ConfigLoader.getProperty("baseUrl"))
-                .auth().preemptive().basic(username, password)
-                .header("Content-Type", "application/json");
+        // Setup RestAssured base URI and authentication
+        RestAssured.baseURI = ConfigLoader.getProperty("baseUrl");
+        RestAssured.authentication = RestAssured.basic(username, password);
     }
 
     @When("I create new books by sending POST requests to {string} with the following details:")
     public void iCreateNewBooksBySendingPOSTRequestsToWithTheFollowingDetails(String endpoint, DataTable dataTable) {
         List<Map<String, String>> bookDetailsList = dataTable.asMaps();
         for (Map<String, String> bookDetails : bookDetailsList) {
-            Response currentResponse = request.body(bookDetails).when().post(endpoint);
-            // Save each response for validation in subsequent steps
-            response = currentResponse; // Store last response for validation, extend if needed to save all responses
+            Response currentResponse = RestAssured.given()
+                    .header("Content-Type", "application/json")
+                    .body(bookDetails)
+                    .when()
+                    .post(endpoint);
+
+            // Save the last response for validation (extend as needed to save all responses)
+            response = currentResponse;
         }
     }
 
@@ -48,12 +64,16 @@ public class AdminBookCreationAPIStepDef {
         Map<String, String> bookDetails = new HashMap<>(dataTable.asMaps().get(0));
 
         // Send POST request with book details
-        response = request.body(bookDetails).when().post(endpoint);
+        response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body(bookDetails)
+                .when()
+                .post(endpoint);
     }
 
     @Then("the API should return a status code of {int} for all requests")
     public void theAPIShouldReturnAStatusCodeOfForAllRequests(int expectedStatusCode) {
-        // For each response, validate the status code
+        // Validate the status code for the last response
         Assert.assertEquals(response.getStatusCode(), expectedStatusCode, "Unexpected status code!");
     }
 
@@ -68,6 +88,7 @@ public class AdminBookCreationAPIStepDef {
         // Assert status code
         Assert.assertEquals(response.getStatusCode(), expectedStatusCode, "Unexpected status code!");
     }
+
     @And("the response should have an error message {string}")
     public void theResponseShouldHaveAnErrorMessage(String expectedErrorMessage) {
         String responseBody = response.getBody().asString();
@@ -75,6 +96,4 @@ public class AdminBookCreationAPIStepDef {
         // If response is not JSON, compare directly with plain text
         Assert.assertEquals(responseBody.trim(), expectedErrorMessage, "Unexpected error message in the response!");
     }
-
 }
-
