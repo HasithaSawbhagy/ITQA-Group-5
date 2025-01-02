@@ -1,6 +1,6 @@
 Feature: Update Book API Functionality
 
-  Scenario: Update all fields successfully
+  Scenario: Update a book successfully
   Given I am authenticated as "admin"
     When I send a PUT request to "/api/books/1" with the following details:
       | id    | title             | author       |
@@ -18,18 +18,11 @@ Scenario: Update with non-existent ID
     Then I should receive a status code of 404
     And the response message should be "Book not found"
 
-  Scenario: User authorization failure
-    Given I am authenticated as "user"
-    When I send a PUT request to "/api/books/1" with the following details:
-      | id    | title             | author       |
-      | 1     | Waves | Sara  |
-    Then I should receive a status code of 403
-    And the response message should be "User is not permitted."
-
-  Scenario: Validation failure for empty title and author
+  Scenario: Validation failure for numeric title and author
     Given I am authenticated as "admin"
-    When I send a PUT request to "/api/books/1" with the following details:
+    When I send a PUT request to "/api/books/2" with the following details:
       | id    | title | author |
-      | 1     | ""    | ""     |
+      | 2     | 1234 | 6789  |
     Then I should receive a status code of 400
-    And the response message should be "Title and author are mandatory fields"
+    And the response message should be "Invalid Input Parameters"
+

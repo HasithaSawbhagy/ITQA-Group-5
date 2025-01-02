@@ -1,6 +1,7 @@
 package org.example.stepdefs;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -31,25 +32,25 @@ public class UpdateBookAPIStepDef {
 
     @When("I send a PUT request to {string} with the following details:")
     public void iSendAPutRequestToWithTheFollowingDetails(String endpoint, DataTable dataTable) {
-        Map<String, String> data = new HashMap<>(dataTable.asMaps().get(0));
+        Map<String, Object> data = new HashMap<>();
 
-        // Handle empty or null values in the feature file
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            if (entry.getValue() == null || entry.getValue().trim().isEmpty()) {
-                data.put(entry.getKey(), ""); // Replace null/empty with an empty string
-            }
-        }
+        // Convert the data table to a map without handling empty strings
+        dataTable.asMaps().get(0).forEach((key, value) -> {
+            data.put(key, value); // Directly add values as-is from the data table
+        });
 
-        // Send the PUT request with the modified data
+        // Send the PUT request with the prepared data
         response = request.body(data).when().put(endpoint);
     }
+
+
 
     @Then("I should receive a status code of {int}")
     public void iShouldReceiveAStatusCodeOf(int statusCode) {
         Assert.assertEquals(response.getStatusCode(), statusCode, "Unexpected status code!");
     }
 
-    @Then("the response should contain:")
+    @And("the response should contain:")
     public void theResponseShouldContain(DataTable expectedDataTable) {
         Map<String, String> expectedData = expectedDataTable.asMaps().get(0);
         for (Map.Entry<String, String> entry : expectedData.entrySet()) {
@@ -58,7 +59,7 @@ public class UpdateBookAPIStepDef {
         }
     }
 
-    @Then("the response message should be {string}")
+    @And("the response message should be {string}")
     public void theResponseMessageShouldBe(String expectedMessage) {
         String contentType = response.getHeader("Content-Type");
         if (contentType != null && contentType.contains("application/json")) {

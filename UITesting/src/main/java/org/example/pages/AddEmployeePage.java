@@ -1,6 +1,7 @@
 
 package org.example.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,6 +27,9 @@ public class AddEmployeePage extends BasePage {
 
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
+
+    @FindBy(xpath = "//span[text()='Required']")
+    private WebElement firstNameRequiredMessage;
 
     @FindBy(css = "h6.oxd-text.oxd-text--h6.orangehrm-main-title")
     private WebElement personalDetailsHeader;
@@ -74,6 +78,7 @@ public class AddEmployeePage extends BasePage {
     }
 
     public void clickSave() {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".oxd-form-loader")));
         WebElement saveButton = waitForElementToBeClickable(this.saveButton);
         saveButton.click();
     }
@@ -82,4 +87,10 @@ public class AddEmployeePage extends BasePage {
         WebElement header = waitForElementToBeVisible(this.personalDetailsHeader);
         return personalDetailsHeader.isDisplayed();
     }
+
+    public boolean isFirstNameRequiredMessageDisplayed() {
+        WebElement requiredMessage = waitForElementToBeVisible(this.firstNameRequiredMessage);
+        return requiredMessage.isDisplayed();
+    }
+
 }

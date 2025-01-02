@@ -50,4 +50,10 @@ public class AddEmployeePageStepDef {
         Assert.assertTrue(addEmployeePage.isPersonalDetailsPageDisplayed(), "Personal Details page is not displayed.");
         driver.quit();
     }
+    @Then("I should see the \"Required\" message under the First Name field")
+    public void iShouldSeeTheRequiredMessageUnderFirstNameField() {
+        Assert.assertTrue(addEmployeePage.isFirstNameRequiredMessageDisplayed(), "Required message under First Name is not displayed.");
+        driver.quit();
+    }
+
 }
