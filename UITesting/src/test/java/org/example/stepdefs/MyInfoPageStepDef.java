@@ -142,6 +142,9 @@ public class MyInfoPageStepDef {
 
     @When("I update the details with {string}, {string}, and {string}")
     public void iUpdateThePersonalDetailsWith(String firstName, String lastName, String employeeId ) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        // Wait for the overlay (if any) to disappear
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("oxd-form-loader")));
         myInfoPage.updateInvalidDetails(firstName, lastName, employeeId);
     }
 

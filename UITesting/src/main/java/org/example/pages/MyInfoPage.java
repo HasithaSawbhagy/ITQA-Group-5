@@ -54,7 +54,7 @@ public class MyInfoPage {
     @FindBy(xpath = "//label[normalize-space(text())='Other Id']/following::input[1]")
     private WebElement otherIdField;
 
-    @FindBy(xpath = "//label[text()=\"Driver License Number\"]/following::input[1]")
+    @FindBy(xpath = "//label[text()=\"Driver's License Number\"]/following::input[1]")
     private WebElement driverLicenseNumberField;
 
     @FindBy(xpath = "//label[normalize-space(text())='License Expiry Date']/following::input[1]")
