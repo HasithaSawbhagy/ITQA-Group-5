@@ -108,29 +108,28 @@ public class AddVacancyStepDef {
         log.info("Edit Vacancy page is displayed.");
     }
 
-
-    @Then("I should see an error message indicating {string}")
-    public void iShouldSeeAnErrorMessageIndicating(String expectedErrorMessage) {
-        log.info("Verifying error messages.");
-        List<String> errorMessages = addVacancyPage.getErrorMessages();
-        Assert.assertTrue(errorMessages.contains(expectedErrorMessage), "Expected error message not found!");
-        log.info("Verified error messages.");
-    }
-
-    @And("I click the save button")
-    public void iClickTheSaveButton() {
-        addVacancyPage.clickSaveButton();
-    }
+//
 
     @And("I fill out the vacancy details with existing {string} , {string} ,{string} , {string} and {string}")
-    public void iFillOutTheVacancyDetailsWithExistingAnd(String JobTitle, String VacancyName, String HiringManager, String Positions, String Description) {
-        addVacancyPage.fillVacancyDetails(
-                JobTitle,
-                VacancyName,
-                HiringManager,
-                Positions,
-                Description
-        );
+    public void iFillOutTheVacancyDetailsWithExisting(String jobTitle, String vacancyName, String hiringManager, String positions, String description) {
+        log.info("Filling vacancy details with existing data.");
+        addVacancyPage.fillVacancyDetailsWithExisting(jobTitle, vacancyName, hiringManager, positions, description);
+        log.info("Filled vacancy details with existing data.");
     }
+
+    @When("I click the save button")
+    public void iClickTheSaveButtonOnly() {
+        log.info("Clicking the save button.");
+        addVacancyPage.clickSaveButtonOnly();
+        log.info("Clicked the save button.");
+    }
+
+@Then("I should see an error message indicating {string}")
+public void iShouldSeeAnErrorMessageIndicating(String errorMessage) {
+    log.info("Checking if error message '{}' is displayed.", errorMessage);
+    Assert.assertTrue(addVacancyPage.isErrorMessageDisplayed(errorMessage), "Error message is not displayed: " + errorMessage);
+    log.info("Error message '{}' is displayed.", errorMessage);
+}
+
 
 }

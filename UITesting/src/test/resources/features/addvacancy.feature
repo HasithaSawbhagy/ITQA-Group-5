@@ -25,4 +25,4 @@ Feature: Add Vacancy Functionality
     Then I should see an error message indicating "<error_message>"
     Examples:
       | JobTitle          | VacancyName                  | HiringManager          | Positions | Description                              |  error_message  |
-      | Software Engineer | Associate Software Engineer  | Senithi Tiranya Perera | 2         |Bachelor’s degree in Computer Science, IT |  Already exists |
+      | Software Engineer |  Software Engineer  | Senithi Tiranya Perera | 2         |Bachelor’s degree in Computer Science, IT |  Already exists |

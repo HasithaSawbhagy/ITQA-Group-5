@@ -106,19 +106,19 @@ public class AddVacancyPage extends BasePage {
                 jobTitleOption =   wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(dynamicJobTitleOptionXpath)));
                 jobTitleOption.click();
                 log.info("Selected job title: " + jobTitle);
-            }catch (TimeoutException e) {
+            }/*catch (TimeoutException e) {
                 log.error("Timeout Exception for job title: " + jobTitle, e);
                 throw new TimeoutException("Timeout Exception for job title: "+ jobTitle + e.getMessage());
-            } catch(NoSuchElementException e){
+            } */catch(NoSuchElementException e){
                 log.error("No such element exception for job title: "+jobTitle, e);
                 throw new NoSuchElementException("Job title " + jobTitle + " not found " + e.getMessage());
-            } catch(StaleElementReferenceException e){
+            } /*catch(StaleElementReferenceException e){
                 log.warn("Stale element reference exception for job title " + jobTitle + ", retrying.", e);
                 dynamicJobTitleOptionXpath = String.format("//div[contains(@class, 'oxd-select-dropdown')]//span[text()='%s']", jobTitle);
                 jobTitleOption =   wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(dynamicJobTitleOptionXpath)));
                 jobTitleOption.click();
                 log.info("Selected job title: " + jobTitle + " after retry.");
-            }
+            }*/
         } else {
             log.info("Job title is empty, skipping selection.");
         }
@@ -183,21 +183,41 @@ public class AddVacancyPage extends BasePage {
             return false;
         }
     }
-    public void addInvalidDetails(String vacancyName, String jobTitle, String hiringManager) {
+
+
+
+//
+
+    public void fillVacancyDetailsWithExisting(String jobTitle, String vacancyName, String hiringManager, String positions, String description) {
+        selectJobTitle(jobTitle);
         enterVacancyName(vacancyName);
-        if(jobTitle != null && !jobTitle.isEmpty()){
-            selectJobTitle(jobTitle);
-        }
         enterHiringManager(hiringManager);
-    }
-    // Fetch all error messages displayed
-    public List<String> getErrorMessages() {
-        wait.until(ExpectedConditions.visibilityOfAllElements(errorMessages));
-        return errorMessages.stream().map(WebElement::getText).toList();
+        enterNumberOfPositions(positions);
+        enterDescription(description);
     }
 
-    public void clickSaveButton() {
+    public void clickSaveButtonOnly() {
+        log.info("Clicking save button.");
         wait.until(ExpectedConditions.elementToBeClickable(saveButton));
         saveButton.click();
+        log.info("Clicked save button.");
     }
+
+public boolean isErrorMessageDisplayed(String errorMessageText) {
+    try {
+        wait.until(ExpectedConditions.visibilityOfAllElements(errorMessages));
+        for (WebElement errorMessage : errorMessages) {
+            if (errorMessage.getText().trim().equals(errorMessageText)) {
+                log.info("Error message '{}' is displayed.", errorMessageText);
+                return true;
+            }
+        }
+        log.warn("Error message '{}' not found among displayed error messages.", errorMessageText);
+        return false;
+    } catch (TimeoutException e) {
+        log.error("Timeout Exception while waiting for error messages.", e);
+        return false;
+    }
+}
+
 }
