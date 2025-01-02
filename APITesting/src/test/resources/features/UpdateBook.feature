@@ -22,7 +22,14 @@ Scenario: Update with non-existent ID
     Given I am authenticated as "admin"
     When I send a PUT request to "/api/books/2" with the following details:
       | id    | title | author |
-      | 2     | 1234 | 6789  |
+      | 2     | 123 | 678  |
     Then I should receive a status code of 400
     And the response message should be "Invalid Input Parameters"
 
+  Scenario: User authorization failure
+    Given I am authenticated as "user"
+    When I send a PUT request to "/api/books/1" with the following details:
+      | id    | title             | author       |
+      | 1     | Waves | Sara  |
+    Then I should receive a status code of 403
+    And the response message should be "User is not permitted."
