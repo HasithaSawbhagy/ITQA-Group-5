@@ -1,33 +1,43 @@
 package org.example.stepdefs;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import util.ConfigLoader;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class UpdateBookAPIStepDef {
-    private RequestSpecification request;
+
     private Response response;
+
+    @Before
+    public void setUp() {
+        // Reset authentication before each scenario
+        RestAssured.authentication = null;
+    }
+
+    @After
+    public void tearDown() {
+        // Clear authentication after each scenario to ensure no carryover
+        RestAssured.authentication = null;
+    }
 
     @Given("I am authenticated as {string}")
     public void iAmAuthenticatedAs(String userRole) {
         String username = ConfigLoader.getProperty("username." + userRole);
-        String password = ConfigLoader.getProperty("password");
+        String password = ConfigLoader.getProperty("password." + userRole);
 
-        request = RestAssured.given()
-                .baseUri(ConfigLoader.getProperty("baseUrl"))
-                .auth().preemptive().basic(username, password)
-                .header("Content-Type", "application/json");
+        RestAssured.baseURI = ConfigLoader.getProperty("baseUrl");
+        RestAssured.authentication = RestAssured.basic(username, password);
     }
 
     @When("I send a PUT request to {string} with the following details:")
@@ -40,10 +50,12 @@ public class UpdateBookAPIStepDef {
         });
 
         // Send the PUT request with the prepared data
-        response = request.body(data).when().put(endpoint);
+        response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body(data)
+                .when()
+                .put(endpoint);
     }
-
-
 
     @Then("I should receive a status code of {int}")
     public void iShouldReceiveAStatusCodeOf(int statusCode) {
@@ -71,4 +83,3 @@ public class UpdateBookAPIStepDef {
         }
     }
 }
-
