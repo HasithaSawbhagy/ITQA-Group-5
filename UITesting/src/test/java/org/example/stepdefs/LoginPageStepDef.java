@@ -1,4 +1,3 @@
-// Login is done by 204031F Dassanayaka H.D.H.S.
 package org.example.stepdefs;
 
 import io.cucumber.java.After;
@@ -44,20 +43,28 @@ public class LoginPageStepDef {
         loginPage = new LoginPage(driver);
     }
 
-    @When("I enter valid credentials")
-    public void iEnterValidCredentials() {
+    @When("I enter valid username {string} and password {string}")
+    public void iEnterValidCredentials(String username,String password) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
         WebElement loginButton =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']")));
-        homePage=  loginPage.login("Admin", "admin123");
+        homePage=  loginPage.login(username, password);
     }
+
 
     @Then("I should be taken to the Overview page")
     public void iShouldBeTakenToTheOverviewPage() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.titleIs("OrangeHRM"));
         Assert.assertEquals(driver.getTitle(), "OrangeHRM");
-        driver.quit();
+    }
+
+    @Then("I should see an {string} error message")
+    public void iShouldSeeAnErrorMessage(String errorMessage) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement errorElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[@class='oxd-text oxd-text--p oxd-alert-content-text']")));
+        Assert.assertTrue(errorElement.isDisplayed(),"Error Message is not displayed");
+        Assert.assertEquals(errorElement.getText(), errorMessage);
     }
 }
