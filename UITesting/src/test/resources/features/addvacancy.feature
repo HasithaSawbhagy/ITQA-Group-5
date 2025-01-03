@@ -16,7 +16,7 @@ Feature: Add Vacancy Functionality
     And I save the vacancy
     Then I should see the "Edit Vacancy" page for the newly added vacancy
 
-  Scenario Outline: Validation of vacancy details with existing inputs
+  Scenario Outline: Validation of add vacancy with existing Job Title
     Given I navigate to the Recruitment page
     When I click the Vacancy tab
     And I click the Add Vacancy button
@@ -24,5 +24,6 @@ Feature: Add Vacancy Functionality
     And  I click the save button
     Then I should see an error message indicating "<error_message>"
     Examples:
-      | JobTitle          | VacancyName                  | HiringManager          | Positions | Description                              |  error_message  |
-      | Software Engineer |  Software Engineer  | Senithi Tiranya Perera | 2         |Bachelor’s degree in Computer Science, IT |  Already exists |
+      | JobTitle          | VacancyName         | HiringManager          | Positions | Description                              |  error_message  |
+      | Software Engineer |  Software Engineer  | Senithi Tiranya Perera | 2         |Bachelor’s degree in Computer Science, IT | Already exists |
+

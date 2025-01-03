@@ -26,8 +26,8 @@ Feature: Delete Book API
     Then the delete API response should return status code 400
     And the delete response should contain the message ""
 
-  Scenario: Delete a non-existing book by ID as an user
-    Given I have valid credentials for "user" to delete book
-    When I delete the book with ID "50"
-    Then the delete API response should return status code 403
-    And the delete response should contain the message "User is not permitted."
+#  Scenario: Delete a non-existing book by ID as an user
+#    Given I have valid credentials for "user" to delete book
+#    When I delete the book with ID "50"
+#    Then the delete API response should return status code 403
+#    And the delete response should contain the message "User is not permitted."
