@@ -40,8 +40,8 @@ public class PostBookAPIEmptyValueStepDef {
     @When("I send a POST request with valid book details")
     public void iSendAPOSTRequestWithValidBookDetails() {
         // Sample data for request
-        requestBody.put("title", "Test Book");
-        requestBody.put("author", "Test Author");
+        requestBody.put("title", "Test Book1");
+        requestBody.put("author", "Test Author1");
 
         response = RestAssured.given()
                 .contentType(ContentType.JSON)

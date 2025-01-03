@@ -9,12 +9,13 @@ Feature: Admin Book Creation API Functionality
       | title  | author  |
       | Book1  | Author1 |
       | Book2  | Author2 |
+      | Book3  | Author3 |
     Then the API should return a status code of 201 for all requests
     And the responses should confirm the books were created with:
       | title  | author  |
       | Book1  | Author1 |
       | Book2  | Author2 |
-
+      | Book3  | Author3 |
 
   Scenario: Try to create a book with an already existing title
     Given I am logged in as an "admin"

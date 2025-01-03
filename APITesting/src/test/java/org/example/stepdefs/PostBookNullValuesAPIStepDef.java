@@ -70,8 +70,8 @@ public class PostBookNullValuesAPIStepDef {
     @When("I send a POST request with existing id {string}")
     public void iSendAPOSTRequestWithExistingId(String id) {
         requestBody.put("id", Integer.parseInt(id));
-        requestBody.put("title", "Test Book");
-        requestBody.put("author", "Test Author");
+        requestBody.put("title", "Book3");
+        requestBody.put("author", "Author3");
 
         response = RestAssured.given()
                 .contentType(ContentType.JSON)

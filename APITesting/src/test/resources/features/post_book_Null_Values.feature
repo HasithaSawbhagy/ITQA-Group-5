@@ -13,6 +13,6 @@ Feature: Post Book API
 
   Scenario: Create a book with an existing id as a user
     Given I have valid credentials for "user" to create book
-    And there is an existing book with id "4"
-    When I send a POST request with existing id "4"
+    And there is an existing book with id "3"
+    When I send a POST request with existing id "3"
     Then The API response should return status code 208
