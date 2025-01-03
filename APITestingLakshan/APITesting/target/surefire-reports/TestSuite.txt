@@ -1,0 +1,19 @@
+-------------------------------------------------------------------------------
+Test set: TestSuite
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 6.611 s <<< FAILURE! - in TestSuite
+runScenario(runner.TestRunner)  Time elapsed: 2.722 s  <<< FAILURE!
+java.lang.AssertionError: Status code mismatch! expected [401] but found [200]
+
+runScenario(runner.TestRunner)  Time elapsed: 2.722 s  <<< FAILURE!
+java.lang.AssertionError: Status code mismatch! expected [401] but found [200]
+
+runScenario(runner.TestRunner)  Time elapsed: 2.722 s  <<< FAILURE!
+java.lang.AssertionError: Status code mismatch! expected [401] but found [200]
+
+runScenario(runner.TestRunner)  Time elapsed: 2.722 s  <<< FAILURE!
+java.lang.AssertionError: Status code mismatch! expected [401] but found [200]
+
+runScenario(runner.TestRunner)  Time elapsed: 2.722 s  <<< FAILURE!
+java.lang.AssertionError: Status code mismatch! expected [401] but found [200]
+
