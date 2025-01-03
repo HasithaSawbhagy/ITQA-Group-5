@@ -1,5 +1,7 @@
 package org.example.stepdefs;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -20,12 +22,22 @@ public class AddUserSteps {
     private LoginPage loginPage;
     private AddUserPage addUserPage;
 
-    @Given("I am logged into the HRM system as Admin")
-    public void iAmLoggedIntoTheHRMSystem() {
-        // Set up the WebDriver
+    @Before
+    public void setup() {
+        // Set the path to your chromedriver executable here
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
+    }
 
+    @After
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Given("I am logged into the HRM system as Admin")
+    public void iAmLoggedIntoTheHRMSystem() {
         // Open the HRM login page
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 
