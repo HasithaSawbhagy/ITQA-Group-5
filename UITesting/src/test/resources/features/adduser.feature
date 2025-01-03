@@ -7,7 +7,7 @@ Feature: User Management in HRM System
     Given I am logged into the HRM system as Admin
     When I navigate to the "View System Users" page via the "Admin" option in the side navigation bar
     And I click the "Add" button to open the "Add User" page
-    And I fill in the required fields with role "Admin", status "Enabled", employee name "Ray  Max", username "ray-maxxn", password "James123#", and confirm password "James123#"
+    And I fill in the required fields with role "Admin", status "Enabled", employee name "Ray  Max", username "ray-mad", password "James123#", and confirm password "James123#"
     And I click the Save button
     Then I should see the View System Users page for the newly added user
 

@@ -79,7 +79,7 @@ public class AddCandidateStepDef {
     }
     @When("I upload a resume")
     public void iUploadAResume(){
-        String filePath = "C:\\Users\\hasit\\Downloads\\test.pdf";
+        String filePath = "C:\\Users\\ASUS\\Downloads\\test.pdf";
         addCandidatePage.uploadResume(filePath);
     }
 
