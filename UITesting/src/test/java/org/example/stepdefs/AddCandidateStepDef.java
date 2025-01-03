@@ -45,7 +45,7 @@ public class AddCandidateStepDef {
     }
     @Given("I navigate to the Recruitment page")
     public void iAmOnTheRecruitmentPage() {
-        addCandidatePage.clickRecruitmentButton();
+        addCandidatePage.iclickRecruitmentButton();
     }
 
 

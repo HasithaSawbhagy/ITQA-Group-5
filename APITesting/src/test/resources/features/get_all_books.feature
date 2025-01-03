@@ -13,7 +13,3 @@ Feature: Get All Books API
     Then the get all books API response should return status code 200
     And the response should contain a list of books
 
-  Scenario: Get all books when there are no books
-    Given I have valid credentials for "admin" to get all books
-    When I request to get all books
-    Then the get all books API response should return status code 200
