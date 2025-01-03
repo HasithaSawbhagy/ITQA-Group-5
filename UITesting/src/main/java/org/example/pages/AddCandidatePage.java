@@ -62,7 +62,9 @@ public class AddCandidatePage extends BasePage {
     // New elements
     @FindBy(xpath = "//div[contains(@class, 'oxd-file-button')]")
     private WebElement browseButton;
-    //Removed fileInput element
+
+    @FindBy(xpath = "//label[text()='Consent to keep data']/following::span[1]")
+    private WebElement consentCheckbox;
 
 
     public AddCandidatePage(WebDriver driver) {
@@ -85,22 +87,30 @@ public class AddCandidatePage extends BasePage {
     }
 
     public void enterFirstName(String firstName) {
-        wait.until(ExpectedConditions.visibilityOf(candidateFirstNameField));
-        candidateFirstNameField.sendKeys(firstName);
+        if (firstName != null) {
+            wait.until(ExpectedConditions.visibilityOf(candidateFirstNameField));
+            candidateFirstNameField.sendKeys(firstName);
+        }
     }
 
     public void enterMiddleName(String middleName) {
-        wait.until(ExpectedConditions.visibilityOf(candidateMiddleNameField));
-        candidateMiddleNameField.sendKeys(middleName);
+        if(middleName != null){
+            wait.until(ExpectedConditions.visibilityOf(candidateMiddleNameField));
+            candidateMiddleNameField.sendKeys(middleName);
+        }
     }
     public void enterLastName(String lastName) {
-        wait.until(ExpectedConditions.visibilityOf(candidateLastNameField));
-        candidateLastNameField.sendKeys(lastName);
+        if (lastName != null) {
+            wait.until(ExpectedConditions.visibilityOf(candidateLastNameField));
+            candidateLastNameField.sendKeys(lastName);
+        }
     }
 
     public void enterEmail(String email) {
-        wait.until(ExpectedConditions.visibilityOf(candidateEmailField));
-        candidateEmailField.sendKeys(email);
+        if(email != null){
+            wait.until(ExpectedConditions.visibilityOf(candidateEmailField));
+            candidateEmailField.sendKeys(email);
+        }
     }
 
 
@@ -120,20 +130,26 @@ public class AddCandidatePage extends BasePage {
     }
 
     public void enterNote(String notes) {
-        wait.until(ExpectedConditions.visibilityOf(notesField));
-        notesField.sendKeys(notes);
+        if(notes != null){
+            wait.until(ExpectedConditions.visibilityOf(notesField));
+            notesField.sendKeys(notes);
+        }
     }
 
 
 
     public void enterContactNumber(String contact) {
-        wait.until(ExpectedConditions.visibilityOf(contactInputField));
-        contactInputField.sendKeys(contact);
+        if(contact != null){
+            wait.until(ExpectedConditions.visibilityOf(contactInputField));
+            contactInputField.sendKeys(contact);
+        }
     }
 
     public void enterKeywords(String keywords) {
-        wait.until(ExpectedConditions.visibilityOf(keywordsField));
-        keywordsField.sendKeys(keywords);
+        if(keywords != null){
+            wait.until(ExpectedConditions.visibilityOf(keywordsField));
+            keywordsField.sendKeys(keywords);
+        }
     }
     // Method to upload a file
     public void uploadResume(String filePath) {
@@ -166,12 +182,16 @@ public class AddCandidatePage extends BasePage {
         }
     }
 
+    public void clickConsentCheckbox(){
+        wait.until(ExpectedConditions.elementToBeClickable(consentCheckbox));
+        consentCheckbox.click();
+    }
 
     public void saveCandidate() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.elementToBeClickable(saveButton));
         saveButton.click();
-        wait.until(ExpectedConditions.visibilityOf(editCandidateTitle));
+        // wait.until(ExpectedConditions.visibilityOf(editCandidateTitle));
     }
 
     public void fillCandidateDetails(String firstName, String middleName, String lastName, String notes, String contact, String jobTitle, String email, String keywords) {

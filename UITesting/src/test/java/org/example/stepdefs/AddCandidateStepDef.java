@@ -63,7 +63,7 @@ public class AddCandidateStepDef {
 
     }
 
-    @When("I fill out the candidate details")
+    @When("I fill out the candidate details with")
     public void iFillOutTheCandidateDetails(List<Map<String, String>> candidateData) {
         Map<String, String> data = candidateData.get(0);
         addCandidatePage.fillCandidateDetails(
@@ -83,10 +83,24 @@ public class AddCandidateStepDef {
         addCandidatePage.uploadResume(filePath);
     }
 
+    @When("I check the consent checkbox")
+    public void iCheckTheConsentCheckbox() {
+        addCandidatePage.clickConsentCheckbox();
+    }
 
     @When("I save the candidate")
     public void iSaveTheCandidate() {
         addCandidatePage.saveCandidate();
+    }
+
+    @Then("I should see the error messages")
+    public void iShouldSeeTheErrorMessages() {
+        List<String> errorMessages = addCandidatePage.getErrorMessages();
+        Assert.assertFalse(errorMessages.isEmpty(), "Error message is not displayed");
+        for(String errorMessage : errorMessages){
+            Assert.assertTrue(errorMessage.equals("Required") || errorMessage.equals("Expected format: admin@example.com"),
+                    "Error message is not 'Required' or 'Expected format: admin@example.com': " + errorMessage);
+        }
     }
 
 
@@ -94,6 +108,7 @@ public class AddCandidateStepDef {
     public void iShouldSeeTheEditCandidatePageForTheNewlyAddedCandidate() {
         Assert.assertTrue(addCandidatePage.isEditCandidatePageDisplayed(), "Edit Candidate page is not displayed.");
     }
+
 
     @Then("I should see an error message")
     public void iShouldSeeAnErrorMessage(){
