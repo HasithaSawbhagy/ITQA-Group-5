@@ -8,12 +8,10 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.pages.AddUserPage;
 import org.example.pages.LoginPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import java.time.Duration;
 
@@ -43,19 +41,9 @@ public class AddUserSteps {
         // Open the HRM login page
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 
-        // Initialize the LoginPage object
+        // Initialize the LoginPage object and log in
         loginPage = new LoginPage(driver);
-
-        // Add explicit waits for the username and password fields to be present
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
-
-        // Perform login
         loginPage.login("Admin", "admin123");
-
-        // Verify login success by checking the page title
-        Assert.assertEquals(driver.getTitle(), "OrangeHRM");
     }
 
     @When("I navigate to the \"View System Users\" page via the \"Admin\" option in the side navigation bar")

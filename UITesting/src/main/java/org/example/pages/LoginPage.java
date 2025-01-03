@@ -1,3 +1,4 @@
+
 // Login is done by 204031F Dassanayaka H.D.H.S.
 package org.example.pages;
 
@@ -5,9 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class LoginPage extends BasePage {
-    //removed the driver field as it is now in BasePage
 
     @FindBy(name = "username")
     private WebElement usernameField;
@@ -24,14 +28,20 @@ public class LoginPage extends BasePage {
     }
 
     public void enterUsername(String username) {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(usernameField));
         usernameField.sendKeys(username);
     }
 
     public void enterPassword(String password) {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(passwordField));
         passwordField.sendKeys(password);
     }
 
     public HomePage clickLoginButton() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(loginButton));
         loginButton.click();
         return new HomePage(driver);
     }

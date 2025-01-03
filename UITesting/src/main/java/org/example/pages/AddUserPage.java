@@ -87,12 +87,23 @@ public class AddUserPage extends BasePage {
     }
 
     public void enterEmployeeName(String employeeName) {
+        // Clear the field before typing
+        employeeNameField.clear();
         employeeNameField.sendKeys(employeeName);
-        WebElement suggestion = waitForElementToBeVisible(
+
+        // Wait for the suggestions dropdown to appear
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement suggestion = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@role='option' and contains(.,'" + employeeName + "')]")
-        );
+        ));
+
+        // Ensure the suggestion is clickable
+        wait.until(ExpectedConditions.elementToBeClickable(suggestion));
+
+        // Click on the suggestion
         suggestion.click();
     }
+
 
     public void enterUsername(String username) {
         waitForElementToBeClickable(usernameField).sendKeys(username);
