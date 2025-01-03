@@ -1,4 +1,6 @@
 package org.example.stepdefs;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -12,12 +14,27 @@ public class AddEmployeePageStepDef {
     private LoginPage loginPage;
     private AddEmployeePage addEmployeePage;
 
-    @Given("I am logged in to the OrangeHRM application as an Admin")
-    public void iAmLoggedInToTheOrangeHRMApplicationWithValidCredentials() {
+    @Before
+    public void setup() {
+        // Set the path to your chromedriver executable
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\Chamudi\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
+    }
+
+    @After
+    public void tearDown() {
+        // Close the browser and clean up
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Given("I am logged in to the OrangeHRM application as an Admin")
+    public void iAmLoggedInToTheOrangeHRMApplicationWithValidCredentials() {
+        // Navigate to the login page
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 
+        // Initialize the LoginPage object and log in
         loginPage = new LoginPage(driver);
         loginPage.login("Admin", "admin123");
     }
