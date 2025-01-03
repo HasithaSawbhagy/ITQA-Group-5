@@ -12,9 +12,8 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import util.ConfigLoader;
 
-import java.util.Optional;
 
-public class PostBookAPIStepDef {
+public class PostBookAPIEmptyValueStepDef {
 
     private Response response;
     private JSONObject requestBody;
@@ -52,18 +51,6 @@ public class PostBookAPIStepDef {
     }
 
 
-    @When("I send a POST request with null title")
-    public void iSendAPOSTRequestWithNullTitle() {
-        requestBody.put("title", Optional.ofNullable(null));
-        requestBody.put("author", "Test Author");
-
-        response = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(requestBody.toString())
-                .post("/api/books");
-        System.out.println("Post request with null title: " +response.getBody().asString());
-    }
-
     @When("I send a POST request with empty title")
     public void iSendAPOSTRequestWithEmptyTitle() {
         requestBody.put("title", "");
@@ -74,18 +61,6 @@ public class PostBookAPIStepDef {
                 .body(requestBody.toString())
                 .post("/api/books");
         System.out.println("Post request with empty title: " +response.getBody().asString());
-    }
-
-    @When("I send a POST request with null author")
-    public void iSendAPOSTRequestWithNullAuthor() {
-        requestBody.put("title", "Test Book2");
-        requestBody.put("author", Optional.ofNullable(null));
-
-        response = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(requestBody.toString())
-                .post("/api/books");
-        System.out.println("Post request with null author: " +response.getBody().asString());
     }
 
 
