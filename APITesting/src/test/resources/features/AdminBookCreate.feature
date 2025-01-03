@@ -40,4 +40,3 @@ Feature: Admin Book Creation API Functionality
       |       |        |
     Then the API should return a status code of 400
     And the response should have an error message "Mandatory parameters should not be null"
-
