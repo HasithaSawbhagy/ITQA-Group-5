@@ -16,8 +16,8 @@ Feature: Delete Book API
   Scenario: Unauthorized deletion of a book as a user
     Given I have valid credentials for "user" to delete book
     When I delete the book with ID "2"
-    Then the delete API response should return status code 403
-    And the delete response should contain the message "User is not permitted."
+    Then the delete API response should return status code 401
+    And the delete response should contain the message "You are not authorized to create the book"
 
 
   Scenario: Attempt to delete a book with invalid ID format as an admin

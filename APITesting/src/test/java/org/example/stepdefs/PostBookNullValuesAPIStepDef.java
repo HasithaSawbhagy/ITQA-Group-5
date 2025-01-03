@@ -16,6 +16,7 @@ public class PostBookNullValuesAPIStepDef {
 
     private Response response;
     private JSONObject requestBody;
+    private int existingBookId;
 
     @Before
     public void setUp() {
@@ -36,24 +37,16 @@ public class PostBookNullValuesAPIStepDef {
         setAuthentication(role);
     }
 
-    @When("I send POST request with valid book details")
-    public void iSendAPOSTRequestWithValidBookDetails() {
-        // Sample data for request
-        requestBody.put("title", "Test Book");
-        requestBody.put("author", "Test Author");
+    @Given("there is an existing book with id {string}")
+    public void thereIsAnExistingBookWithId(String id) {
+        existingBookId = Integer.parseInt(id);
 
-        response = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .body(requestBody.toString())
-                .post("/api/books");
-        System.out.println("Post request with valid data :" +response.getBody().asString());
     }
-
 
     @When("I send POST request with null title")
     public void iSendAPOSTRequestWithNullTitle() {
         requestBody.put("title", JSONObject.NULL); // Use JSONObject.NULL for null values
-        requestBody.put("author", "Test Author");
+        requestBody.put("author", "Test Author3");
 
         response = RestAssured.given()
                 .contentType(ContentType.JSON)
@@ -74,6 +67,18 @@ public class PostBookNullValuesAPIStepDef {
         System.out.println("Post request with null author: " + response.getBody().asString());
     }
 
+    @When("I send a POST request with existing id {string}")
+    public void iSendAPOSTRequestWithExistingId(String id) {
+        requestBody.put("id", Integer.parseInt(id));
+        requestBody.put("title", "Test Book");
+        requestBody.put("author", "Test Author");
+
+        response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(requestBody.toString())
+                .post("/api/books");
+        System.out.println("Post request with existing ID: " + response.getBody().asString());
+    }
 
 
     @Then("The API response should return status code {int}")

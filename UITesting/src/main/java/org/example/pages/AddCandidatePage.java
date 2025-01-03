@@ -50,7 +50,7 @@ public class AddCandidatePage extends BasePage {
     private WebElement editCandidateTitle;
 
     @FindBy(xpath = "//span[text()='Recruitment']")
-    private WebElement recruitmentButton;
+    private WebElement TherecruitmentButton;
     @FindBy(xpath = "//a[text()='Candidates']")
     private WebElement candidatesButton;
     @FindBy(xpath = "//button[text()=' Add ']")
@@ -73,9 +73,9 @@ public class AddCandidatePage extends BasePage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-    public void clickRecruitmentButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(recruitmentButton));
-        recruitmentButton.click();
+    public void iclickRecruitmentButton() {
+        wait.until(ExpectedConditions.elementToBeClickable(TherecruitmentButton));
+        TherecruitmentButton.click();
     }
     public void clickcandidatesButton() {
         wait.until(ExpectedConditions.elementToBeClickable(candidatesButton));
